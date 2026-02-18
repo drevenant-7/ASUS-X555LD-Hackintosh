@@ -81,7 +81,12 @@ Configure your BIOS as follows before installation:
 
 ## 📥 Installation Guide
 
+## 📂 Folder Structure Note
+This repo contains the `BOOT` and `OC` folders. To use this EFI:
 
+1. Create a folder named `EFI` on your desktop
+2. Copy the `BOOT` and `OC` folders from this repo into it
+3. Replace the `EFI` folder on your USB or EFI partition with this new folder
 
 
 ### **Step 1: Prepare the USB Installer**
