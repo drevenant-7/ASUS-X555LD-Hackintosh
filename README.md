@@ -80,6 +80,27 @@ Configure your BIOS as follows before installation:
 - DVMT Pre-Allocated: **64MB or higher**
 
 ## 📥 Installation Guide
+Generate Your Own SMBIOS (CRITICAL!)
+
+
+
+   Download GenSMBIOS
+   Run it and select Generate SMBIOS
+
+   Choose model: MacBookAir7,2
+
+   Copy the generated values into your config.plist under:
+    text
+
+   PlatformInfo → Generic
+
+   -MLB (Board Serial)
+
+   -ROM (MAC address)
+
+   -SystemUUID
+   
+   -SerialNumber
 
 ### **Step 1: Prepare the USB Installer**
 1. Download macOS Big Sur from the App Store
