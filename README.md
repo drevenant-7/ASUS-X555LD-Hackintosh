@@ -80,11 +80,21 @@ Configure your BIOS as follows before installation:
 - DVMT Pre-Allocated: **64MB or higher**
 
 ## 📥 Installation Guide
+
+
+
+
+### **Step 1: Prepare the USB Installer**
+1. Download macOS Big Sur from the App Store
+2. Create bootable USB:
+   ```bash
+   sudo /Applications/Install\ macOS\ Big\ Sur.app/Contents/Resources/createinstallmedia --volume /Volumes/YourUSBName
 Generate Your Own SMBIOS (CRITICAL!)
 
-
+Do NOT use the placeholder values in this EFI!
 
    Download GenSMBIOS
+
    Run it and select Generate SMBIOS
 
    Choose model: MacBookAir7,2
@@ -94,16 +104,93 @@ Generate Your Own SMBIOS (CRITICAL!)
 
    PlatformInfo → Generic
 
-   -MLB (Board Serial)
+   MLB (Board Serial)
 
-   -ROM (MAC address)
+   ROM (MAC address)
 
-   -SystemUUID
+   SystemUUID
+
+   SerialNumber
+
+Step 3: Install macOS
+
+   Boot from the USB drive
+
+   Select "Install macOS Big Sur" from OpenCore menu
+
+   Format your drive as APFS in Disk Utility
+
+   Install macOS
+
+   System will restart 2-3 times
+
+🔧 Post-Installation
+Essential Fixes
+1. Headphone Audio Fix
+
+If headphones sound distorted or bad, run this command after each boot:
+bash
+
+alc-verb 0x19 SET_PIN_WIDGET_CONTROL 0x24
+
+To automate this fix:
+
+   Create a file called fix-audio.command on your Desktop:
+    bash
+
+   #!/bin/bash
+   alc-verb 0x19 SET_PIN_WIDGET_CONTROL 0x24
+
+   Make it executable:
+   bash
+
+   chmod +x ~/Desktop/fix-audio.command
+
+   Add to Login Items:
+
+   System Preferences → Users & Groups → Login Items
+
+   Click + and select fix-audio.command
+
+2. Boot-Args Used
+text
+
+-v alcid=13 -wegnoegpu
+
+   -v : Verbose mode (remove after stable)
+
+   alcid=13 : Audio layout ID for ALC233
+
+   -wegnoegpu : Disables discrete GPU (broken/unsupported)
+
+3. Install alc-verb Tool
+
+If you don't have alc-verb installed:
+
+Option A: Download from AppleALC Releases
+
+   Go to AppleALC Releases
+
+   Download the latest Debug version
+
+   Extract and find alc-verb in the Utilities folder
+   Copy to /usr/local/bin/:
+   bash
+
+   sudo cp ~/Downloads/alc-verb /usr/local/bin/
+   sudo chmod +x /usr/local/bin/alc-verb
+
+Option B: Build from Source
+bash
+
+git clone https://github.com/acidanthera/AppleALC.git
+cd AppleALC/Utilities/alc-verb
+make
+sudo make install
+
+Recommended Apps
+HWMonitor - Check temperatures (your ASUS stays under 75°C!)
    
-   -SerialNumber
-
-### **Step 1: Prepare the USB Installer**
-1. Download macOS Big Sur from the App Store
-2. Create bootable USB:
-   ```bash
-   sudo /Applications/Install\ macOS\ Big\ Sur.app/Contents/Resources/createinstallmedia --volume /Volumes/YourUSBName
+Hackintool - For troubleshooting
+    
+ProperTree - Edit config.plist
